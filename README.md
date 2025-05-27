@@ -1,6 +1,6 @@
 # Video Analyzer Pipeline
 
-This repository contains a Python script (`video_analyzer_skip_frames.py`) that processes video files to detect objects, motion, and light anomalies using PyTorch and OpenCV, generates cropped snapshots, builds heatmaps, and produces annotated videos.
+This repository contains a Python script (`video_analyzer.py`) that processes video files to detect objects, motion, and light anomalies using PyTorch and OpenCV, generates cropped snapshots, builds heatmaps, and produces annotated videos.
 
 ---
 

@@ -16,12 +16,16 @@ except ImportError:
     use_tqdm = False
 
 # CONFIG
-MAX_FRAMES = 200           # cap max frames
-SKIP_FRAMES = 2            # process every 2nd frame
-CONFIDENCE_THRESHOLD = 0.5 # updated from 0.3
+MAX_FRAMES = 200
+SKIP_FRAMES = 2
+CONFIDENCE_THRESHOLD = 0.5
 
 # STEP 1: Run detection on video
 video_path = 'input_video.mp4'
+if not os.path.exists(video_path):
+    print(f"❌ File {video_path} not found!")
+    exit()
+
 cap = cv2.VideoCapture(video_path)
 frame_count_total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 frame_width = int(cap.get(3))
@@ -53,7 +57,6 @@ for i in frame_iter:
     if not ret:
         break
 
-    # Skip frames for speed
     if i % SKIP_FRAMES != 0:
         continue
 
@@ -89,9 +92,23 @@ for i in frame_iter:
             class_name = COCO_INSTANCE_CATEGORY_NAMES[label]
             x1, y1, x2, y2 = map(int, box.tolist())
 
-            # Draw red rectangle on frame
+            # Draw red rectangle
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
+            # Prepare label text
+            label_text = f"{class_name}: {score:.2f}"
+
+            # Get text size
+            (text_w, text_h), _ = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
+
+            # Draw filled rectangle behind text
+            cv2.rectangle(frame, (x1, max(y1 - text_h - 10, 0)), (x1 + text_w, y1), (0, 0, 255), -1)
+
+            # Draw label text over the filled rectangle (white text)
+            cv2.putText(frame, label_text, (x1, max(y1 - 5, 0)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+
+            # Save cropped regions
             cropped = frame[y1:y2, x1:x2]
             if class_name == 'person':
                 cv2.imwrite(f'cropped_humans/frame{frame_count}_person{k}.jpg', cropped)
