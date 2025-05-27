@@ -11,9 +11,9 @@ myenv/
 .vscode/
 
 # Video & output files
-*.mp4
+#*.mp4
 *.avi
 *.mov
 cropped_*/
 *.png
-*.jpg
+#*.jpg
