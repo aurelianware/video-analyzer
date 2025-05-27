@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env/
+.venv/
+myenv/
+
+# VS Code
+.vscode/
+
+# Video & output files
+*.mp4
+*.avi
+*.mov
+cropped_*/
+*.png
+*.jpg
